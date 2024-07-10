@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "libc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/microswift-packages/libc",
+      "state" : {
+        "revision" : "0229d8aef74f26d54af4dfd0fb5cd496276c0e52",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 2
+}
