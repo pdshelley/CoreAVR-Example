@@ -2,7 +2,7 @@
 
 
 ## Quick-Start Guide (Building and Running)
-### Setting things up (Assuming this will one day become a git repository instead of being a ZIP file that's just passed around)
+### Setting things up
 1. Begin by cloning the repository through a Terminal or Git Client of choice.
 For Example: `git clone https://github.com/pdshelley/CoreAVR-Example.git`
 
