@@ -54,27 +54,209 @@ uart0.dataRegisterEmptyInterruptEnable = .on
 import CoreAVR
 
 // Setup for blink()
-//GPIO.pb5.setDataDirection(.output)
+GPIO.pb5.setDataDirection(.output)
 
+@inlinable
+@inline(__always)
+var SREG: UInt8 {
+    get {
+        _volatileRegisterReadUInt8(0x5F)
+    }
+    set {
+        _volatileRegisterWriteUInt8(0x5F, newValue)
+    }
+} // 0x5F
 
+@inlinable
+@inline(__always)
+var EIMSK: UInt8 {
+    get {
+        _volatileRegisterReadUInt8(0x3D)
+    }
+    set {
+        _volatileRegisterWriteUInt8(0x3D, newValue)
+    }
+} // 0x3D
 
-configureSingleConversion(referenceVoltage: .AVccWithExternalCapacitorAtAnalogReferencePin, prescaler: .Factor128)
+@inlinable
+@inline(__always)
+var EICRA: UInt8 {
+    get {
+        _volatileRegisterReadUInt8(0x69)
+    }
+    set {
+        _volatileRegisterWriteUInt8(0x69, newValue)
+    }
+} // 0x69
+
+uart0.write("Hello World\n") // Used to make sure UART is working
+
+//uart0.write("Are interrupts enabled? ")
+//uart0.write(SREG >> UInt8(7))
+//uart0.write("\n")
+//
+//SREG |= UInt8(1 << UInt8(7)) & 0b10000000
+//
+//uart0.write("Enabling Interrupts...\n")
+//uart0.write("Are interrupts enabled? ")
+//uart0.write(SREG >> UInt8(7))
+//uart0.write("\n")
+
+//uart0.write("Current EIMSK Status: ")
+//uart0.write(EIMSK)
+//uart0.write("\n")
+//uart0.write("Enabling INT0...\n")
+//
+EICRA = 0b00000001
+EIMSK = 0b00000001
+//
+//uart0.write("Current EIMSK Status: ")
+//uart0.write(EIMSK)
+//uart0.write("\n")
+
+@interruptHandler
+@_silgen_name("__vector_1")
+func emptyInterrupt1() {
+    if GPIO.pb5.value() == .high {
+        GPIO.pb5.setValue(.low)
+    } else {
+        GPIO.pb5.setValue(.high)
+    }
+}
+
+// Note: These empty vectors ensure the chip isn't restarted when an internal interrupt gets triggered.
+// Until I figure out how to disable them, of course.
+@interruptHandler
+@_silgen_name("__vector_2")
+func emptyInterrupt2() {}
+
+@interruptHandler
+@_silgen_name("__vector_3")
+func emptyInterrupt3() {}
+
+@interruptHandler
+@_silgen_name("__vector_4")
+func emptyInterrupt4() {}
+
+@interruptHandler
+@_silgen_name("__vector_5")
+func emptyInterrupt5() {}
+
+@interruptHandler
+@_silgen_name("__vector_6")
+func emptyInterrupt6() {}
+
+@interruptHandler
+@_silgen_name("__vector_7")
+func emptyInterrupt7() {}
+
+@interruptHandler
+@_silgen_name("__vector_8")
+func emptyInterrupt8() {}
+
+@interruptHandler
+@_silgen_name("__vector_9")
+func emptyInterrupt9() {}
+
+@interruptHandler
+@_silgen_name("__vector_10")
+func emptyInterrupt10() {}
+
+@interruptHandler
+@_silgen_name("__vector_11")
+func emptyInterrupt11() {}
+
+@interruptHandler
+@_silgen_name("__vector_12")
+func emptyInterrupt12() {}
+
+@interruptHandler
+@_silgen_name("__vector_13")
+func emptyInterrupt13() {}
+
+@interruptHandler
+@_silgen_name("__vector_14")
+func emptyInterrupt14() {}
+
+@interruptHandler
+@_silgen_name("__vector_15")
+func emptyInterrupt15() {}
+
+@interruptHandler
+@_silgen_name("__vector_16")
+func emptyInterrupt16() {}
+
+@interruptHandler
+@_silgen_name("__vector_17")
+func emptyInterrupt17() {}
+
+@interruptHandler
+@_silgen_name("__vector_18")
+func emptyInterrupt18() {}
+
+@interruptHandler
+@_silgen_name("__vector_19")
+func emptyInterrupt19() {}
+
+@interruptHandler
+@_silgen_name("__vector_20")
+func emptyInterrupt20() {}
+
+@interruptHandler
+@_silgen_name("__vector_21")
+func emptyInterrupt21() {}
+
+@interruptHandler
+@_silgen_name("__vector_22")
+func emptyInterrupt22() {}
+
+@interruptHandler
+@_silgen_name("__vector_23")
+func emptyInterrupt23() {}
+
+@interruptHandler
+@_silgen_name("__vector_24")
+func emptyInterrupt24() {}
+
+@interruptHandler
+@_silgen_name("__vector_25")
+func emptyInterrupt25() {}
+
+//waitOneSecond()
+Interrupts.enableInterrupts()
+
+//configureSingleConversion(referenceVoltage: .AVccWithExternalCapacitorAtAnalogReferencePin, prescaler: .Factor128)
 
 while(true) {
+//    if GPIO.pd2.value() == .high {
+//        while GPIO.pd2.value() == .high {}
+//        
+//        if GPIO.pb5.value() == .high {
+//            GPIO.pb5.setValue(.low)
+//        } else {
+//            GPIO.pb5.setValue(.high)
+//        }
+//    }
+//    uart0.write("Current EIFR Status: ")
+//    uart0.write(EIFR)
+//    uart0.write("\n")
+//    
+//    waitOneSecond()
+    
+    // Basically blinky
 //    GPIO.pb5.setValue(.high)
 //    waitOneSecond()
 //    GPIO.pb5.setValue(.low)
-    waitOneSecond()
+//    waitOneSecond()
     
-//    uart0.write("Hello World\n") // Used to make sure UART is working
-    
+        
     // Uncomment to test UInt8 
 //    uart0.write(0)
 //    uart0.write("\n")
 //    let int = analogRead(pin: 4)
-    let number = analogRead(on: .ADC0)
-    uart0.write(number)
-    uart0.write("\n")
+    //let number = analogRead(on: .ADC0)
+    //uart0.write(number)
+    //uart0.write("\n")
 
     // In HAL (https://github.com/swiftforarduino/HAL) navigate to Module/HAL.swift 
     // Update name of "writeUInt8()" to "write()" 
@@ -134,16 +316,16 @@ while(true) {
 
 
 
-func configureSingleConversion(referenceVoltage: ADC.VoltageReferenceSelection, prescaler: ADC.PrescalerSelectBits) {
-    // Self.`adcsra`.`adate` = .init(bitfieldValue: false)
-    AnalogeDigitalConverter.autoTriggerEnable = false
-
-    // Self.referenceVoltage = referenceVoltage
-    AnalogeDigitalConverter.voltageReferenceSelection = referenceVoltage
-    
-    // Self.prescaler = prescaler
-    AnalogeDigitalConverter.prescalerSelectBits = prescaler
-}
+//func configureSingleConversion(referenceVoltage: ADC.VoltageReferenceSelection, prescaler: ADC.PrescalerSelectBits) {
+//    // Self.`adcsra`.`adate` = .init(bitfieldValue: false)
+//    AnalogeDigitalConverter.autoTriggerEnable = false
+//
+//    // Self.referenceVoltage = referenceVoltage
+//    AnalogeDigitalConverter.voltageReferenceSelection = referenceVoltage
+//    
+//    // Self.prescaler = prescaler
+//    AnalogeDigitalConverter.prescalerSelectBits = prescaler
+//}
 
 
 //var value: UInt16 {
@@ -153,19 +335,19 @@ func configureSingleConversion(referenceVoltage: ADC.VoltageReferenceSelection, 
 //      return Adc.data
 //    }
 //}
-func analogRead(on channel: ADC.AnalogChannelSelectionBits) -> UInt16 {
-    //    Self.`admux`.`mux` = .init(bitfieldValue: channel.bitfieldValue)
-    AnalogeDigitalConverter.analogChannelSelectionBits = channel
-    
-//    Self.enabled = true
-    AnalogeDigitalConverter.enableADC = true
-    
-//    Self.`adcsra`.`adsc` = .init(bitfieldValue: true)
-    AnalogeDigitalConverter.startConversion()
-    
-    while AnalogeDigitalConverter.conversionRunning { }
-    return AnalogeDigitalConverter.DataRegister
-}
+//func analogRead(on channel: ADC.AnalogChannelSelectionBits) -> UInt16 {
+//    //    Self.`admux`.`mux` = .init(bitfieldValue: channel.bitfieldValue)
+//    AnalogeDigitalConverter.analogChannelSelectionBits = channel
+//    
+////    Self.enabled = true
+//    AnalogeDigitalConverter.enableADC = true
+//    
+////    Self.`adcsra`.`adsc` = .init(bitfieldValue: true)
+//    AnalogeDigitalConverter.startConversion()
+//    
+//    while AnalogeDigitalConverter.conversionRunning { }
+//    return AnalogeDigitalConverter.DataRegister
+//}
 
 
 
