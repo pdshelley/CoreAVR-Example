@@ -11,10 +11,12 @@
 import libc
 
 // I think we probably want to expose the delay loops to Swift.
+// On an Arduino Uno one delayLoop2() lasts 16.395053 milliseconds.
 public func delayLoop2(_ n: UInt16) {
     _delay_loop_2(n)
 }
 
+// On an Arduino Uno one delayLoop2() lasts 48.158 microseconds.
 public func delayLoop1(_ n: UInt8) {
     _delay_loop_1(n)
 }
@@ -22,6 +24,12 @@ public func delayLoop1(_ n: UInt8) {
 // Note: Should this be removed? Useful for testing a simple blink. 
 public func waitOneSecond() {
     for _ in 0..<64 {
+        delayLoop2(0)
+    }
+}
+
+public func waitShort() {
+    for _ in 0..<2 {
         delayLoop2(0)
     }
 }
